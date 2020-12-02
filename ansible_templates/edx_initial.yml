@@ -1,0 +1,35 @@
+---
+- hosts: "{{ passed_in_hosts }}"
+  become: yes
+  remote_user: ubuntu
+  become_user: root
+  tasks:
+    - name: Install Git client
+      yum:
+        name: git
+        state: present
+#    - name: Ensure the locale exists
+#      locale_gen:
+#        name: en_US.UTF-8
+#        state: present
+    - name: Install local
+      command: sudo apt-get install language-pack-en -y
+    - name: dpkg-reconfigure command
+      command: sudo dpkg-reconfigure -f noninteractive locales
+    - name: Check errors during package installation
+      command: sudo dpkg --configure -a
+    - name: Update all packages on a Debian/Ubuntu
+      apt:
+        update_cache: 'yes'
+        upgrade: dist
+    - name: Reboot a slow machine that might have lots of updates to apply
+      reboot:
+        reboot_timeout: 600
+        test_command: "whoami"
+    - name: Wait for system to become reachable again
+      wait_for_connection:
+        delay: 60
+        timeout: 300
+    - name: Run config and installation script
+      script: edx_install_main.sh
+

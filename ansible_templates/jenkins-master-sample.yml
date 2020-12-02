@@ -3,12 +3,44 @@
     with_items:
       - "{{ passed_in_hosts }}"
   become: 'yes'
-  remote_user: ec2-user
+  remote_user: ubuntu
   become_user: root
   tasks:
     - name: Install Git client
       yum:
         name: git
         state: present
+    - name: Ensure the locale exists
+      locale_gen:
+        name: en_US.UTF-8
+        state: present
+    - name: set as default locale
+      command: localectl set-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+    - name: dpkg-reconfigure command
+        shell: dpkg-reconfigure locales
+        ignore_errors: yes
+    - name: Check errors during package installation
+        shell: dpkg --configure -a
+        ignore_errors: yes
+    - name: Update all packages on a Debian/Ubuntu
+        apt:
+          update_cache: yes
+          upgrade: dist
+
+    - name: Reboot box if kernel/libs updated and requested by the system
+        shell: sleep 10 && /sbin/shutdown -r now 'Rebooting box to update system libs/kernel as needed'
+          args:
+            removes: /var/run/reboot-required
+            async: 300
+            poll: 0
+            ignore_errors: true
+
+    - name: Wait for system to become reachable again
+        wait_for_connection:
+          delay: 60
+          timeout: 300
+
+
+
 
   

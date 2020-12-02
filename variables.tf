@@ -6,20 +6,20 @@ variable "aws_region" {
 
 variable "app_name" {
   type        = string
-  description = "UpRunningTasks"
-  default     = "prenovate-infrastructure"
+  description = "Sample configuration and deployment of OpenEDX using Terraform and Ansible"
+  default     = "OpenEDX_Deployment_EC2"
 }
 
 variable "app_instance" {
   type        = string
   description = "Application instance name (ie. honolulu, customer_name, department, etc.)."
-  default     = "prenovate-instance"
+  default     = "edx-instance"
 }
 
 variable "app_stage" {
   type        = string
   description = "Application stage (ie. dev, prod, qa, etc)."
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "global_tags" {
@@ -40,7 +40,7 @@ variable "ami" {
 variable "instance_type" {
   type        = string
   description = "default instance type"
-  default     = "t2.micro"
+  default     = "t2.large"
 }
 
 
@@ -55,4 +55,8 @@ variable "secret_key" {
   description = "Secret Access Key"
 
 
+}
+
+variable "profile" {
+  default = "prenovate-admin"
 }

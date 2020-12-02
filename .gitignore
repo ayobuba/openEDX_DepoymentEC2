@@ -6,6 +6,14 @@
 .terraform/
 
 # tfvars files
-#*.tfvars
+*.tfvars
 
 .idea
+
+jenkins_multi_prenovate
+jenkins_multi_prenovate.pub
+
+prenovate-eu-central-1.pem
+prenovate-eu-west-2.pem
+pre
+

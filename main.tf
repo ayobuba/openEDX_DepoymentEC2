@@ -6,7 +6,7 @@ terraform {
 
     # Fill Workspace
     workspaces {
-      name = ""
+      name = "openEDX_DepoymentEC2"
     }
   }
 
